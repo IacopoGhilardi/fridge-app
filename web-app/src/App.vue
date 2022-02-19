@@ -5,6 +5,7 @@
 </template>
 <script>
 import FridgeLayout from './components/layouts/Auth'
+
 export default {
   components: {
     FridgeLayout
