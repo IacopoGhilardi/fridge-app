@@ -1,40 +1,36 @@
 package main
 
 import (
-	"context"
 	"fmt"
-	"log"
 	"net/http"
 
-	"github.com/gin-gonic/gin"
+	"fridge-app/food"
+	"fridge-app/fridge"
 
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
 
 	var router = gin.Default()
 
-	router.GET("/albums", album.getAlbums)
+	fridge.PrintSomething()
+
 	router.GET("/", func(c *gin.Context) {
 		c.Redirect(http.StatusMovedPermanently, "http://localhost:8080/")
 	})
 
+	router.POST("/fridge/upsert/:id", func(c *gin.Context) {
+		food := c.Param("food")
+		newFood := food.NewFood(food.name, food.qty)
+
+		c.String(http.StatusOK, newFood)
+	})
+
+	banana := food.NewFood("banana", 33)
+	fmt.Println("banaan", banana)
+
 	router.Run("localhost:3000")
 
-	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
-	client, err := mongo.Connect(context.TODO(), clientOptions)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	err = client.Ping(context.TODO(), nil)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Println("Connected to MongoDB!")
+	// fmt.Println("Connected to MongoDB!")
 }
