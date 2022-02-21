@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"net/http"
 
 	"fridge-app/food"
@@ -21,10 +22,13 @@ func main() {
 	})
 
 	router.POST("/fridge/upsert/:id", func(c *gin.Context) {
-		food := c.Param("food")
-		newFood := food.NewFood(food.name, food.qty)
+		bodyReq, _ := ioutil.ReadAll(c.Request.Body)
+		println(string(body))
+		foodParam := c.Param("food")
+		println(string(foodParam))
+		var newFood food.Food = food.NewFood("banana", 33)
 
-		c.String(http.StatusOK, newFood)
+		c.String(http.StatusOK, bodyReq, newFood)
 	})
 
 	banana := food.NewFood("banana", 33)

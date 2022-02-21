@@ -3,11 +3,13 @@ package fridge
 import (
 	"fmt"
 	"fridge-app/food"
+	"time"
 )
 
 type Fridge struct {
-	id   int
-	food []food.Food
+	id        int
+	food      []food.Food
+	createdAt time.Time
 }
 
 func PrintSomething() {
