@@ -2,39 +2,43 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"net/http"
 
 	"fridge-app/food"
-	"fridge-app/fridge"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
 
-	var router = gin.Default()
-
-	fridge.PrintSomething()
+	router := gin.Default()
+	router.Use(cors.Default())
 
 	router.GET("/", func(c *gin.Context) {
 		c.Redirect(http.StatusMovedPermanently, "http://localhost:8080/")
 	})
 
-	router.POST("/fridge/upsert/:id", func(c *gin.Context) {
-		bodyReq, _ := ioutil.ReadAll(c.Request.Body)
-		println(string(body))
-		foodParam := c.Param("food")
-		println(string(foodParam))
-		var newFood food.Food = food.NewFood("banana", 33)
-
-		c.String(http.StatusOK, bodyReq, newFood)
+	router.GET("/fridge", func(c *gin.Context) {
+		myMap := map[string]int{"prova": 12, "altra_prova": 13}
+		c.JSON(200, myMap)
 	})
 
-	banana := food.NewFood("banana", 33)
-	fmt.Println("banaan", banana)
+	router.POST("/fridge/upsert/:id", func(c *gin.Context) {
+		bodyRequest := c.Request.Body
+
+		fmt.Print(bodyRequest)
+		// bodReq, _ := ioutil.ReadAll(c.Request.Body)
+		// println(string(bodyReq))
+		foodParam := c.Param("food")
+		println(string(foodParam))
+		var newFood = new(food.Food)
+		newFood.Init("banana", 33)
+
+		c.JSON(200, bodyRequest)
+		// c.String(http.StatusOK, bodyRequest, newFood)
+	})
 
 	router.Run("localhost:3000")
-
 	// fmt.Println("Connected to MongoDB!")
 }

@@ -12,13 +12,8 @@ type Fridge struct {
 	createdAt time.Time
 }
 
-func PrintSomething() {
-	fmt.Println("speriamo funzioni cazzo")
-}
-
-func NewFridge(id int, food []food.Food) *Fridge {
+func (newFridge *Fridge) Init((id int, food []) {
 	newFridge := new(Fridge)
 	newFridge.id = id
 	newFridge.food = food
-	return newFridge
 }

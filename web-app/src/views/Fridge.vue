@@ -68,6 +68,7 @@ export default {
         this.axios.get('http://localhost:3000/fridge')
             .then(response => {
                 console.log('your fridge', response.data.fridgeItems);
+                console.log('ciaooo', response);
                 this.yourFridge = response.data.fridgeItems[0].food;
             });
     },
