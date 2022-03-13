@@ -20,7 +20,7 @@ export default {
   mounted() {
     this.axios.get('http://localhost:3000/fridge')
     .then(response => {
-        this.yourFridge = response.data.fridgeItems[0].food;
+        this.yourFridge = response.data.food;
         console.log('fridge!!', this.yourFridge);
         // this.axios.get('https://api.spoonacular.com/recipes/findByIngredients', {
         //   params: {

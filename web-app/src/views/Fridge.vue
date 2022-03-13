@@ -67,9 +67,8 @@ export default {
         //api al db per prendere il frigo dal db
         this.axios.get('http://localhost:3000/fridge')
             .then(response => {
-                console.log('your fridge', response.data.fridgeItems);
-                console.log('ciaooo', response);
-                this.yourFridge = response.data.fridgeItems[0].food;
+                console.log('your fridge', response.data);
+                // this.yourFridge = response.data.food;
             });
     },
 
@@ -91,6 +90,7 @@ export default {
             if (checkDuplicates.length === 0) {
                 food.quantity = 1;
                 this.yourFridge.push(food);
+                console.log('new your fridge', this.yourFridge);
             } else {
                 let foodToAddIndex = this.yourFridge.indexOf(checkDuplicates[0]);
                 this.yourFridge[foodToAddIndex].quantity++;
@@ -111,7 +111,7 @@ export default {
                 fridge: this.yourFridge,
             })
             .then(response => {
-                console.log(response);
+                console.log(response.data);
             });
         }
     },

@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
 
@@ -12,6 +11,11 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
+
+type Person struct {
+	name    string
+	address string
+}
 
 func main() {
 
@@ -39,23 +43,22 @@ func main() {
 	})
 
 	router.POST("/fridge/upsert/:id", func(context *gin.Context) {
-		body, err := ioutil.ReadAll(context.Request.Body)
-		bodyRequest := context.Request.Body
+		// body, err := ioutil.ReadAll(context.Request.Body)
+		// bodyRequest := context.Request.Body
 
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		fmt.Print(bodyRequest)
-		fmt.Print(body)
+		// fmt.Print(bodyRequest)
+		// fmt.Print(body)
 
-		foodParam := context.Param("food")
-		println(string(foodParam))
-		var newFood = new(food.Food)
-		newFood.Init("banana", 33)
+		// foodParam := context.Param("food")
+		// println(string(foodParam))
+		newFood := food.Food{9040, "bananas.jpg", "banana", 33}
+		fmt.Print(newFood)
 
-		context.JSON(http.StatusOK, gin.H{"newFood": newFood})
-		// c.String(http.StatusOK, bodyRequest, newFood)
+		context.JSON(200, newFood)
 	})
 
 	router.Run("localhost:3000")
