@@ -10,10 +10,6 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
-func prova() {
-	fmt.Println("aoooo vedi di funzionare")
-}
-
 func Close(client *mongo.Client, ctx context.Context,
 	cancel context.CancelFunc) {
 
