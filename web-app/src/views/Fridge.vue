@@ -27,14 +27,14 @@
             <div class="flex flex-wrap">
                 <div v-for="(yourFood, index) in yourFridge" :key="index" class="border p-8 pt-0 m-2">
                     <div class="text-center text-xl my-2">
-                        x{{ yourFood.quantity }}
+                        x{{ yourFood.Quantity }}
                     </div>
                     <div class="mb-4">
-                        <img :src="`https://spoonacular.com/cdn/ingredients_100x100/${yourFood.image}`" alt="your_food_image">
+                        <img :src="`https://spoonacular.com/cdn/ingredients_100x100/${yourFood.Image}`" alt="your_food_image">
                     </div>
                     <div class="text-center">
                         <p>
-                            {{ yourFood.name.toUpperCase() }}
+                            {{ yourFood.Name.toUpperCase() }}
                         </p>
                         <FridgeButton colorClass="bg-red-500" text="Rimuovi" @click="removeFromFridge(yourFood.id, index)"></FridgeButton>
                     </div>
@@ -68,7 +68,8 @@ export default {
         this.axios.get('http://localhost:3000/fridge')
             .then(response => {
                 console.log('your fridge', response.data);
-                // this.yourFridge = response.data.food;
+                this.yourFridge = response.data.foodList;
+                console.log('this is my fridge', this.yourFridge);
             });
     },
 

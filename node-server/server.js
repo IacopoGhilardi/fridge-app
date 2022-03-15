@@ -11,8 +11,8 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-app.listen(5000, () => {
-    console.log('listening on port 5000');
+app.listen(3000, () => {
+    console.log('listening on port 3000');
 })
 mongoose.connect('mongodb://localhost:27017/the-fridge');
 

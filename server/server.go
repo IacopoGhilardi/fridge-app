@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"time"
@@ -53,34 +51,37 @@ func main() {
 		if err = cursor.All(ctx, &fridges); err != nil {
 			panic(err)
 		}
-		c.JSON(200, fridges)
+		c.JSON(200, gin.H{"foodList": fridges[0].Food})
 	})
 
 	router.POST("/fridge/upsert/:id", func(context *gin.Context) {
-		body, err := ioutil.ReadAll(context.Request.Body)
-		// bodyRequest := context.Request.Body
-		if err != nil {
-			log.Fatal(err)
+		// body, err := ioutil.ReadAll(context.Request.Body)
+		// if err != nil {
+		// 	log.Fatal(err)
+		// }
+
+		// fridgeId := context.Request.Header["id"]
+		fridgeId := 2
+
+		var foodArray []food.Food = []food.Food{
+			{Name: "Banana", Image: "banana.jpg", Quantity: 2},
+			{Name: "Apple", Image: "apple.jpg", Quantity: 2},
 		}
 
-		fridge := fridge.Fridge{
-			Food:       []string{"ciao", "ciao"},
+		newFridge := fridge.Fridge{
+			Id:         fridgeId,
+			Food:       foodArray,
 			Created_at: time.Now(),
 		}
 
-		// foodParam := context.Param("food")
-		// println(string(foodParam))
-		insertResult, err := fridgesCollection.InsertOne(ctx, fridge)
+		insertResult, err := fridgesCollection.InsertOne(ctx, newFridge)
 
 		if err != nil {
 			log.Fatal(err)
 		}
-		newFood := food.Food{9040, "bananas.jpg", "banana", 33}
-		fmt.Print(newFood)
 
-		context.JSON(200, gin.H{"body": body, "result": insertResult})
+		context.JSON(200, gin.H{"newFridge": newFridge, "result": insertResult})
 	})
 
 	router.Run("localhost:3000")
-	// fmt.Println("Connected to MongoDB!")
 }

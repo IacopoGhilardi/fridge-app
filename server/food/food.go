@@ -1,8 +1,7 @@
 package food
 
 type Food struct {
-	Id       int
-	Image    string
-	Name     string
-	Quantity int
+	Image    string `bson:image,omitempty`
+	Name     string `bson:name,omitempty`
+	Quantity int    `bson:quantity,omitempty`
 }

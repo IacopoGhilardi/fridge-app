@@ -1,13 +1,12 @@
 package fridge
 
 import (
+	"fridge-app/food"
 	"time"
-
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type Fridge struct {
-	Id         primitive.ObjectID `bson:"_id,omitempty"`
-	Food       []string           `bson:food`
-	Created_at time.Time          `bson:created_at,omitempty`
+	Id         int         `bson:"_id,omitempty"`
+	Food       []food.Food `bson:food`
+	Created_at time.Time   `bson:created_at,omitempty`
 }
