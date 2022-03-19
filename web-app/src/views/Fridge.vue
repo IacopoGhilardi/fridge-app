@@ -34,7 +34,7 @@
                     </div>
                     <div class="text-center">
                         <p>
-                            {{ yourFood.Name.toUpperCase() }}
+                            {{ yourFood.name.toUpperCase() }}
                         </p>
                         <FridgeButton colorClass="bg-red-500" text="Rimuovi" @click="removeFromFridge(yourFood.id, index)"></FridgeButton>
                     </div>
@@ -86,7 +86,7 @@ export default {
         },
         addToFridge(food) {
             let checkDuplicates = this.yourFridge.filter(foodItem => {
-                return foodItem.id === food.id;
+                return foodItem.Id === food.Id;
             });
             if (checkDuplicates.length === 0) {
                 food.quantity = 1;

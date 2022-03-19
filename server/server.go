@@ -5,25 +5,20 @@ import (
 	"net/http"
 	"time"
 
+	"fridge-app/configs"
 	"fridge-app/food"
 	"fridge-app/fridge"
-	"fridge-app/setup"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-type Person struct {
-	name    string
-	address string
-}
-
 func main() {
 
 	// Get Client, Context, CalcelFunc and
 	// err from connect method.
-	client, ctx, cancel, err := setup.Connect("mongodb://localhost:27017/the-fridge")
+	client, ctx, cancel, err := configs.Connect("mongodb://localhost:27017/the-fridge")
 	if err != nil {
 		panic(err)
 	}
@@ -32,8 +27,8 @@ func main() {
 	fridgesCollection := database.Collection("fridges")
 
 	// Free the resource when main function is  returned
-	defer setup.Close(client, ctx, cancel)
-	setup.Ping(client, ctx)
+	defer configs.Close(client, ctx, cancel)
+	configs.Ping(client, ctx)
 
 	router := gin.Default()
 	router.Use(cors.Default())

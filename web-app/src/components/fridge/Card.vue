@@ -31,6 +31,7 @@ export default {
     },
 
     mounted() {
+        console.log('cose', this.$props.food);
     },
 
     methods: {
