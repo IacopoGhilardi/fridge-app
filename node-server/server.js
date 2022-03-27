@@ -38,12 +38,13 @@ app.post('/fridge/upsert/:fridgeId', cors(), async function (req, res) {
 });
 
 app.get('/fridge', cors(), async function (req, res) {
-    console.log('chiamata get');
+    console.log("proprio lui");
 
     try {
       let fridgeItems = await Fridge.find();
+      console.log("fridge Items", fridgeItems);
       res.send({
-        'fridgeItems': fridgeItems
+        "foodList": fridgeItems
       })
     } catch (error) {
       console.log(error);

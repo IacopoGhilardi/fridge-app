@@ -3,6 +3,7 @@ package configs
 import (
 	"context"
 	"fmt"
+	"log"
 	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
@@ -52,4 +53,38 @@ func Ping(client *mongo.Client, ctx context.Context) error {
 	}
 	fmt.Println("connected successfully")
 	return nil
+}
+
+func ConnectDB() *mongo.Client {
+	fmt.Printf("connected")
+	client, err := mongo.NewClient(options.Client().ApplyURI(EnvMongoURI()))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Printf("oooooooooooooooooooooooooooo")
+
+	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+	err = client.Connect(ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Printf("aluluuuuuuuu")
+
+	//ping the database
+	err = client.Ping(ctx, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("Connected to MongoDB")
+	return client
+}
+
+//Client instance
+var Database *mongo.Client = ConnectDB()
+
+func GetCollection(client *mongo.Client, collectionName string) *mongo.Collection {
+	collection := client.Database("the-fridge").Collection(collectionName)
+	return collection
 }

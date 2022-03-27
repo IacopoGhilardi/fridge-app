@@ -1,51 +1,18 @@
-package main
+package routes
 
 import (
-	"fridge-app/configs"
-	"fridge-app/routes"
-	"net/http"
+	"fridge-app/controllers"
 
 	"github.com/gin-gonic/gin"
 )
 
-// var client, ctx, cancel, err = configs.Connect("mongodb://localhost:27017/the-fridge")
-// var database = client.Database("the-fridge")
-// var fridgesCollection = database.Collection("fridges")
-
-func main() {
-
-	router := gin.Default()
-
-	router.GET("/", func(c *gin.Context) {
-		c.Redirect(http.StatusMovedPermanently, "http://localhost:8080/")
-	})
-
-	configs.ConnectDB()
-
-	routes.FridgeRoute(router)
-
-	router.Run("localhost::3000")
-
-	// Get Client, Context, CalcelFunc and
-	// err from connect method.
-	// client, ctx, cancel, err := configs.Connect("mongodb://localhost:27017/the-fridge")
-	// if err != nil {
-	// 	panic(err)
-	// }
-
-	// Free the resource when main function is  returned
-	// defer configs.Close(client, ctx, cancel)
-	// configs.Ping(client, ctx)
-
-	// router := gin.Default()
-	// router.Use(cors.Default())
-
-	//run database
-	// configs.ConnectDB()
+func FridgeRoute(router *gin.Engine) {
 
 	// router.GET("/", func(c *gin.Context) {
 	// 	c.Redirect(http.StatusMovedPermanently, "http://localhost:8080/")
 	// })
+
+	router.POST("/fridge/new", controllers.CreateFridge())
 
 	// router.GET("/fridge", func(c *gin.Context) {
 	// 	var fridges []fridge.Fridge
@@ -87,8 +54,4 @@ func main() {
 
 	// 	context.JSON(200, gin.H{"newFridge": newFridge, "result": insertResult})
 	// })
-
-	routes.FridgeRoute(router)
-
-	router.Run("localhost:3000")
 }
