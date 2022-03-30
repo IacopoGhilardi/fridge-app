@@ -21,7 +21,7 @@ app.get('/', function (req, res) {
 });
 
 app.post('/fridge/upsert/:fridgeId', cors(), async function (req, res) {
-  console.log(`Upserting fridge: ${req.params.fridgeId}`);
+  console.log('upsert fridge');
 
   try {
     await Fridge.findOneAndUpdate({_id: `${req.params.fridgeId}`}, {$set:{food:req.body.fridge}})
@@ -42,7 +42,7 @@ app.get('/fridge', cors(), async function (req, res) {
 
     try {
       let fridgeItems = await Fridge.find();
-      console.log("fridge Items", fridgeItems);
+
       res.send({
         "foodList": fridgeItems
       })

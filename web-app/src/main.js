@@ -9,8 +9,10 @@ import router from './router'
 
 let app = createApp(App)
 
-app.config.globalProperties.$myKey = '49b11a04577b4b818c848eef087c4315';
+app.config.globalProperties.myKey = '49b11a04577b4b818c848eef087c4315';
 
 app.use(router)
 .use(VueAxios, axios)
 .mount('#app')
+
+app.provide('myKey', '49b11a04577b4b818c848eef087c4315')

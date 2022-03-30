@@ -18,7 +18,6 @@
                 </div>
             </div>
         </div>
-
         <div>
             <h1 class="text-3xl mb-4 text-center mt-4">Ecco cosa contiene il tuo frigo</h1>
             <div class="flex justify-center">
@@ -47,137 +46,70 @@
 <script setup>
 import FridgeButton from '../components/atoms/Button.vue'
 import axios from 'axios'
-//  import { inject } from 'vue'
+import { ref } from 'vue'
 import { onMounted } from 'vue'
 import { inject } from 'vue'
 
-let searchedFood;
-let searchResults = [];
-let yourFridge = [];
-// const spoonacularKey = inject('myKey');
-
-const axios = inject('axios');
-// console.log('my fucking key', axios);
-
+const searchedFood = ref('')
+const searchResults = ref([]);
+const yourFridge = ref([]);
+const spoonacularKey = inject('myKey');
 
 onMounted(() => {
     //api al db per prendere il frigo dal db
     axios.get('http://localhost:3000/fridge')
         .then(response => {
-            yourFridge = response.data.foodList[0].food;
-            console.log('this is my fridge', yourFridge);
+            yourFridge.value = response.data.foodList[0].food;
         });
 })
 
-
 function searchItem() {
-    axios.get(`https://api.spoonacular.com/food/ingredients/search?query=${searchedFood}&number=1`, {
+    console.log('search item');
+    console.log(searchedFood.value);
+    axios.get(`https://api.spoonacular.com/food/ingredients/search?query=${searchedFood.value}&number=1`, {
         params: {
-            'apiKey' : 'ky'
+            'apiKey' : spoonacularKey
         }
         })
         .then(response => {
-            searchResults = response.data.results;
+            console.log(response);
+            searchResults.value = response.data.results;
+            console.log(searchResults);
         });
 }
 
 function addToFridge(food) {
-        let checkDuplicates = yourFridge.filter(foodItem => {
-            return foodItem.Id === food.Id;
-        });
-        if (checkDuplicates.length === 0) {
-            food.quantity = 1;
-            yourFridge.push(food);
-            console.log('new your fridge', yourFridge);
-        } else {
-            let foodToAddIndex = yourFridge.indexOf(checkDuplicates[0]);
-            yourFridge[foodToAddIndex].quantity++;
-        }
+    let checkDuplicates = yourFridge.value.filter(foodItem => {
+        return foodItem.Id === food.Id;
+    });
+    if (checkDuplicates.length === 0) {
+        food.quantity = 1;
+        yourFridge.value.push(food);
+        console.log('new your fridge', yourFridge);
+    } else {
+        let foodToAddIndex = yourFridge.value.indexOf(checkDuplicates[0]);
+        yourFridge.value[foodToAddIndex].quantity++;
     }
+}
 
-    function removeFromFridge(foodId, index) {
-        if (yourFridge[index].quantity > 1) {
-            yourFridge[index].quantity--;
-        } else {
-            yourFridge.splice(index, 1); 
-        }
+function removeFromFridge(foodId, index) {
+    console.log('removeFromFridge');
+    if (yourFridge.value[index].quantity > 1) {
+        yourFridge.value[index].quantity--;
+    } else {
+        yourFridge.value.splice(index, 1); 
     }
+}
 
-    function saveNewFridgeItems() {
-        axios.post(`http:localhost:3000/fridge/upsert/2`, {
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            fridge: yourFridge,
-        })
-        .then(response => {
-            console.log(response.data);
-        });
-    }
-// export default {
-//     components: {
-//         FridgeButton,
-//     },
-
-//     data() {
-//         return {
-//             searchedFood: '',
-//             searchResults: [],
-//             yourFridge: [],
-//         }
-//     },
-
-//     mounted() {   
-//         //api al db per prendere il frigo dal db
-//         this.axios.get('http://localhost:3000/fridge')
-//             .then(response => {
-//                 this.yourFridge = response.data.foodList[0].food;
-//                 console.log('this is my fridge', this.yourFridge);
-//             });
-//     },
-
-//     methods: {
-//         searchItem() {
-//             this.axios.get(`https://api.spoonacular.com/food/ingredients/search?query=${this.searchedFood}&number=1`, {
-//             params: {
-//                 'apiKey' : this.myKey
-//             }
-//             })
-//             .then(response => {
-//                 this.searchResults = response.data.results;
-//             });
-//         },
-//         addToFridge(food) {
-//             let checkDuplicates = this.yourFridge.filter(foodItem => {
-//                 return foodItem.Id === food.Id;
-//             });
-//             if (checkDuplicates.length === 0) {
-//                 food.quantity = 1;
-//                 this.yourFridge.push(food);
-//                 console.log('new your fridge', this.yourFridge);
-//             } else {
-//                 let foodToAddIndex = this.yourFridge.indexOf(checkDuplicates[0]);
-//                 this.yourFridge[foodToAddIndex].quantity++;
-//             }
-//         },
-//         removeFromFridge(foodId, index) {
-//             if (this.yourFridge[index].quantity > 1) {
-//                 this.yourFridge[index].quantity--;
-//             } else {
-//                 this.yourFridge.splice(index, 1); 
-//             }
-//         },
-//         saveNewFridgeItems() {
-//             this.axios.post(`http://localhost:3000/fridge/upsert/2`, {
-//                 headers: {
-//                     'Content-Type': 'application/json'
-//                 },
-//                 fridge: this.yourFridge,
-//             })
-//             .then(response => {
-//                 console.log(response.data);
-//             });
-//         }
-//     },
-// }
+function saveNewFridgeItems() {
+    axios.post(`http:localhost:3000/fridge/upsert/2`, {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        fridge: yourFridge.value,
+    })
+    .then(response => {
+        console.log(response.data);
+    });
+}
 </script>
