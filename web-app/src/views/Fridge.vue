@@ -64,17 +64,13 @@ onMounted(() => {
 })
 
 function searchItem() {
-    console.log('search item');
-    console.log(searchedFood.value);
     axios.get(`https://api.spoonacular.com/food/ingredients/search?query=${searchedFood.value}&number=1`, {
         params: {
             'apiKey' : spoonacularKey
         }
         })
         .then(response => {
-            console.log(response);
             searchResults.value = response.data.results;
-            console.log(searchResults);
         });
 }
 
@@ -85,7 +81,6 @@ function addToFridge(food) {
     if (checkDuplicates.length === 0) {
         food.quantity = 1;
         yourFridge.value.push(food);
-        console.log('new your fridge', yourFridge);
     } else {
         let foodToAddIndex = yourFridge.value.indexOf(checkDuplicates[0]);
         yourFridge.value[foodToAddIndex].quantity++;
@@ -93,7 +88,6 @@ function addToFridge(food) {
 }
 
 function removeFromFridge(foodId, index) {
-    console.log('removeFromFridge');
     if (yourFridge.value[index].quantity > 1) {
         yourFridge.value[index].quantity--;
     } else {
@@ -102,7 +96,7 @@ function removeFromFridge(foodId, index) {
 }
 
 function saveNewFridgeItems() {
-    axios.post(`http:localhost:3000/fridge/upsert/2`, {
+    axios.post(`http://localhost:3000/fridge/upsert/2`, {
         headers: {
             'Content-Type': 'application/json'
         },

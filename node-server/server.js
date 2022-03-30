@@ -5,8 +5,6 @@ const Fridge = require('./models/fridge');
 const cors = require('cors')
 const bodyParser = require('body-parser');
 const fridge = require('./models/fridge');
-
-// const passportVar = passport();
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
@@ -38,8 +36,6 @@ app.post('/fridge/upsert/:fridgeId', cors(), async function (req, res) {
 });
 
 app.get('/fridge', cors(), async function (req, res) {
-    console.log("proprio lui");
-
     try {
       let fridgeItems = await Fridge.find();
 
