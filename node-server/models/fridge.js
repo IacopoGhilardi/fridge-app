@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const fridgeSchema = new mongoose.Schema({
     _id: Number,
+    user_id :Number,
     food: {
         type: Array,
     },

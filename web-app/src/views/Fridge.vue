@@ -46,9 +46,7 @@
 <script setup>
 import FridgeButton from '../components/atoms/Button.vue'
 import axios from 'axios'
-import { ref } from 'vue'
-import { onMounted } from 'vue'
-import { inject } from 'vue'
+import { ref, onMounted, inject } from 'vue'
 
 const searchedFood = ref('')
 const searchResults = ref([]);
