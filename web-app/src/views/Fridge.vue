@@ -55,7 +55,11 @@ const spoonacularKey = inject('myKey');
 
 onMounted(() => {
     //api al db per prendere il frigo dal db
-    axios.get('http://localhost:3000/fridge')
+    axios.get('http://localhost:3000/fridge',{
+            params: {
+                'token' : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjI0ZjUyZWVjZDQ0MzA2MDg5ZmEzZTczIiwiZW1haWwiOiJmLnBldHRyb25lQGhvbG9jcm9uLml0IiwiaWF0IjoxNjQ5NjI1ODY4LCJleHAiOjE2NDk2MzMwNjh9.UyQNim8x5bgMMwDH1UMM12ppu1_MAoAtTtkZagwhATo"
+            }
+        })
         .then(response => {
             yourFridge.value = response.data.foodList[0].food;
         });
@@ -74,7 +78,7 @@ function searchItem() {
 
 function addToFridge(food) {
     let checkDuplicates = yourFridge.value.filter(foodItem => {
-        return foodItem.Id === food.Id;
+        return foodItem.id === food.id;
     });
     if (checkDuplicates.length === 0) {
         food.quantity = 1;
@@ -98,6 +102,7 @@ function saveNewFridgeItems() {
         headers: {
             'Content-Type': 'application/json'
         },
+        'token' : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjI0ZjUyZWVjZDQ0MzA2MDg5ZmEzZTczIiwiZW1haWwiOiJmLnBldHRyb25lQGhvbG9jcm9uLml0IiwiaWF0IjoxNjQ5NjI1ODY4LCJleHAiOjE2NDk2MzMwNjh9.UyQNim8x5bgMMwDH1UMM12ppu1_MAoAtTtkZagwhATo",
         fridge: yourFridge.value,
     })
     .then(response => {

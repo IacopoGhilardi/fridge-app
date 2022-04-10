@@ -8,8 +8,8 @@ const cors = require('cors')
 const bodyParser = require('body-parser');
 const User = require('./models/user');
 const authMiddleware = require("./middleware/auth");
-require("dotenv").config();
 const app = express();
+require("dotenv").config();
 app.use(cors());
 app.use(bodyParser.json());
 
@@ -85,20 +85,31 @@ app.post('/login', async (req, res) => {
           expiresIn: "2h",
         }
       );
+
+      user.token = token;
+
     } else {
       console.log('Password doesn\'t match');
       res.status(400).send("Password does not match");
     }
 
+    console.log('arrivi qua?');
+    // console.log('token', token);
     // save user token
-    user.token = token;
+    
+
+    console.log('ora?');
+
+    
 
     // user
     res.status(200).json(user);
 
   } catch (error) {
     console.log(error);
-    res.status(500).json(error);
+    res.send({
+      'error': error
+    });
   }
 });
 
